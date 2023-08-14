@@ -9,17 +9,14 @@ CARRIERS = {
  
 EMAIL = "tennismanz100@gmail.com"
 PASSWORD = "ewalufubdznpohnv"
- 
-def send_message():
+#'6463410237'
+def send_message(message):
     print("Sending message...")
-    recipient = '6463410237' + CARRIERS['verizon']
+    recipient = '3478248190' + CARRIERS['verizon']
     auth = (EMAIL, PASSWORD)
  
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
     server.login(auth[0], auth[1])
  
-    server.sendmail(auth[0], recipient, "This is your personalized tennis scraper")
-
-send_message()
- 
+    server.sendmail(auth[0], recipient, message)
