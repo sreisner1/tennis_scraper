@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service as ChromeService
+
 
 
 import csv
@@ -84,6 +85,8 @@ def after_seven():
     curr_hour = get_current_hour()
     if curr_hour >= 19:
         delete_file()
+        return True 
+    return False
   
 
 def get_starting_row(hour):
@@ -99,9 +102,14 @@ def get_starting_row(hour):
     return total
 
 def get_to_court_sheet():
-    driver_path = '/Users/samreisner/Desktop/Tennis_Scraper/chromedriver'
-    chrome_service = ChromeService(driver_path)
-    driver = webdriver.Chrome(service=chrome_service)
+    #driver_path = '/Users/samreisner/Desktop/Tennis_Scraper/chromedriver'
+    #chrome_service = ChromeService(driver_path)
+
+    # driver = webdriver.Chrome(ChromeDriverManager(version="114.0.5735.90").install())
+
+    driver = webdriver.Safari()
+    
+    #driver.set_page_load_timeout(10)  # 10 seconds
 
     driver.get('https://saltaire.chelseareservations.com/');
 
@@ -137,6 +145,7 @@ def get_tomorrow_sheet(driver):
     display_button.click()
     time.sleep(1)
     return driver
+
 def scrape_table(driver, starting_row):
     courts_found = 0
     court_time = []
@@ -167,11 +176,17 @@ def scrape_table(driver, starting_row):
         row += 1
     return courts_found, court_time, courts
 
-def main():
+def run_program():
+    print("Running program ...") 
+    
+    #add an output file
+    
     #csv file is structed as: time, court
-    after_seven()
+    if after_seven():
+        print("After 7. Turn on tomorrow")
+        return False
     hour = get_current_hour()
-  
+
     starting = get_starting_row(hour)
     #every hour is +6 rows (except 5 & 6)
     driver = get_to_court_sheet()
@@ -180,9 +195,17 @@ def main():
     sent_courts = read_file()
     all_openings_today = all_openings(num_courts_found, courts_today, times)
     courts_to_send = find_unique(sent_courts, all_openings_today)
- 
+    print("These are the open courts, ", courts_to_send)
     send_messages(courts_to_send)
     write_to_file(courts_to_send)
+    driver.quit()
+
+    
+def main():
+    run_program()
+    
     
 if __name__ == "__main__":
     main()
+
+    
