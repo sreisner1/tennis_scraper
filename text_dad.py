@@ -12,7 +12,7 @@ PASSWORD = "ewalufubdznpohnv"
 #'6463410237'
 def send_message(message):
     print("Sending message...")
-    recipient = '3478248190' + CARRIERS['verizon']
+    recipient = '6463410237' + CARRIERS['verizon']
     auth = (EMAIL, PASSWORD)
  
     server = smtplib.SMTP("smtp.gmail.com", 587)
