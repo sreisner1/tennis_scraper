@@ -9,7 +9,7 @@ CARRIERS = {
  
 EMAIL = "tennismanz100@gmail.com"
 PASSWORD = "ewalufubdznpohnv"
-#'6463410237'
+
 def send_message(message):
     print("Sending message...")
     recipient = '646******' + CARRIERS['verizon']
